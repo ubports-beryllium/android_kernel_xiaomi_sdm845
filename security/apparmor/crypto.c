@@ -69,6 +69,44 @@ fail:
 int aa_calc_profile_hash(struct aa_profile *profile, u32 version, void *start,
 			 size_t len)
 {
+	struct {
+		struct shash_desc shash;
+		char ctx[crypto_shash_descsize(apparmor_tfm)];
+	} desc;
+	char *hash = NULL;
+	int error = -ENOMEM;
+
+	if (!apparmor_tfm)
+		return NULL;
+
+	hash = kzalloc(apparmor_hash_size, GFP_KERNEL);
+	if (!hash)
+		goto fail;
+
+	desc.shash.tfm = apparmor_tfm;
+	desc.shash.flags = 0;
+
+	error = crypto_shash_init(&desc.shash);
+	if (error)
+		goto fail;
+	error = crypto_shash_update(&desc.shash, (u8 *) data, len);
+	if (error)
+		goto fail;
+	error = crypto_shash_final(&desc.shash, hash);
+	if (error)
+		goto fail;
+
+	return hash;
+
+fail:
+	kfree(hash);
+
+	return ERR_PTR(error);
+}
+
+int aa_calc_profile_hash(struct aa_profile *profile, u32 version, void *start,
+			 size_t len)
+{
 	SHASH_DESC_ON_STACK(desc, apparmor_tfm);
 	int error = -ENOMEM;
 	u32 le32_version = cpu_to_le32(version);
