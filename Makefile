@@ -794,6 +794,8 @@ KBUILD_CFLAGS += $(call cc-option, -mno-global-merge,)
 KBUILD_CFLAGS += $(call cc-option, -fcatch-undefined-behavior)
 KBUILD_CFLAGS += $(call cc-option, -no-integrated-as)
 KBUILD_AFLAGS += $(call cc-option, -no-integrated-as)
+KBUILD_CFLAGS += $(call cc-option, -fno-builtin-bcmp)
+KBUILD_AFLAGS += $(call cc-option, -fno-builtin-bcmp)
 else
 
 # These warnings generated too much noise in a regular build.
