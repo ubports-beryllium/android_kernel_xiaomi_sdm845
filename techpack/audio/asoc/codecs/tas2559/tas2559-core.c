@@ -1170,13 +1170,13 @@ int tas2559_enable(struct tas2559_priv *pTAS2559, bool bEnable)
 	if ((pTAS2559->mpFirmware->mnPrograms == 0)
 	    || (pTAS2559->mpFirmware->mnConfigurations == 0)) {
 		dev_err(pTAS2559->dev, "%s, firmware not loaded\n", __func__);
-		/*Load firmware*/
-		nResult = request_firmware_nowait(THIS_MODULE, 1, TAS2559_FW_NAME,
-			pTAS2559->dev, GFP_KERNEL, pTAS2559, tas2559_fw_ready);
-		if(nResult < 0) {
-			dev_err(pTAS2559->dev, "%s, firmware is loaded\n", __func__);
-			goto end;
-		}
+		// /*Load firmware*/
+		// nResult = request_firmware_nowait(THIS_MODULE, 1, TAS2559_FW_NAME,
+		// 	pTAS2559->dev, GFP_KERNEL, pTAS2559, tas2559_fw_ready);
+		// if(nResult < 0) {
+		// 	dev_err(pTAS2559->dev, "%s, firmware is loaded\n", __func__);
+		// 	goto end;
+		// }
 	}
 
 	/* check safe guard*/
